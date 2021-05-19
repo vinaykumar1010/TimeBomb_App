@@ -17,9 +17,10 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final long START_TIME_IN_MILLIS = 600000;
-    private TextView aTextViewCountdown;
-    private TextView aEditTextInput;
+    private static final long START_TIME_IN_MILLIS = 0;
+    private TextView aTextViewCountdown ;
+    private TextView aEditTextMinInput;
+    private TextView aEditTextHourInput;
     private Button aButtonStartPause;
     private Button aButtonReset;
     private Button aButtonSet;
@@ -41,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
         aButtonStartPause = findViewById(R.id.bt_start);
         aButtonReset = findViewById(R.id.bt_reset);
        aButtonSet = findViewById(R.id.bt_set);
-       aEditTextInput = findViewById(R.id.et_input);
+       aEditTextMinInput = findViewById(R.id.et_input_min);
+        aEditTextHourInput = findViewById(R.id.et_input_hour);
 
         aButtonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = aEditTextInput.getText().toString();
+                String input = aEditTextMinInput.getText().toString();
+              // String s2 = aEditTextHourInput.getText().toString();
+               // String input = s1.concat(s2);
+                Log.d("ded","input value is :"+ input );
                 if (input.length() == 0) {
                     Toast.makeText(MainActivity.this, "Field can't be empty", Toast.LENGTH_SHORT).show();
                     return;
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 setTime(millisInput);
-                aEditTextInput.setText("");
+                aEditTextMinInput.setText("");
             }
         });
 
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 aTimerRunning = false;
                 aButtonStartPause.setText("start");
                 aButtonReset.setVisibility(View.INVISIBLE);
-                
+
             }
         }.start();
         // start function  return object of countdowntimer type , constructor does the same thing
@@ -122,22 +127,13 @@ public class MainActivity extends AppCompatActivity {
         mCountDownTimer.cancel();
         aTimerRunning = false;
         updateWatchInterface();
-//        mCountDownTimer.cancel();
-//        aTimerRunning = false;
-//        aButtonStartPause.setText("start");
-//        aButtonReset.setVisibility(View.VISIBLE);
     }
 
     private void resetTimer() {
         aTimeLeftInMillis = aStartTimeInMillis;
         updateCountDownText();
         updateWatchInterface();
-//        aTimeLeftInMillis = START_TIME_IN_MILLIS;
-//        aButtonStartPause.setText("Start");
-//        aTextViewCountdown.setText("00:00:00");
-//        aButtonStartPause.setVisibility(View.VISIBLE);
-//        aTimerRunning = false;
-//
+    //    aTextViewCountdown.setText(00:00:00);
     }
 
     private void updateCountDownText() {
@@ -157,12 +153,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateWatchInterface() {
         if (aTimerRunning) {
-            aEditTextInput.setVisibility(View.INVISIBLE);
+            aEditTextMinInput.setVisibility(View.INVISIBLE);
             aButtonSet.setVisibility(View.INVISIBLE);
             aButtonReset.setVisibility(View.INVISIBLE);
             aButtonStartPause.setText("Pause");
         } else {
-            aEditTextInput.setVisibility(View.VISIBLE);
+            aEditTextMinInput.setVisibility(View.VISIBLE);
             aButtonSet.setVisibility(View.VISIBLE);
             aButtonStartPause.setText("Start");
             if (aTimeLeftInMillis < 1000) {
