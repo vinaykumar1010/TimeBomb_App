@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final long START_TIME_IN_MILLIS = 0;
+    private static final long START_TIME_IN_MILLIS = 1500000; // 25min
     private TextView aTextViewCountdown;
     private TextView aEditTextMinInput;
     private Button aButtonStartPause;
@@ -40,15 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private VideoView bombView;
 
     /**
-     *
-        1. Increase circle minutes size
-        2. Increase minutes edit text size
-        3. On start take user input and set in aTextViewCountdown
-        4. Remove set button
-        5. Remove hr code
-        6. Show Pause and Stop after starting, Hide minute edit text
-        7. Handle if minute is <= 0 or > 60. Handle when ,min is 60
-     8. fix orientation</>
+     * 1. Increase circle minutes size
+     * 2. Increase minutes edit text size
+     * 3. On start take user input and set in aTextViewCountdown
+     * 4. Remove set button
+     * 5. Remove hr code
+     * 6. Show Pause and Stop after starting, Hide minute edit text
+     * 7. Handle if minute is <= 0 or > 60. Handle when ,min is 60
+     * 8. fix orientation</>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleStartButtonAction() {
+
         // One button is being used to handle start and pause action.
         aButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,14 +83,25 @@ public class MainActivity extends AppCompatActivity {
     private void updateUIAndStartTimer() {
         // 1. Get user input minutes from minutes edit text
         String input = aEditTextMinInput.getText().toString();
-        // 2. Set these minutes in circle text view.
-        setMinutesInCircle(input);
 
         // 3. Convert user input minutes in millisecond. 1 min = 1 * 60 * 1000 milliseconds = 60000 milliseconds
         long timerMilliseconds = Long.parseLong(String.valueOf(input)) * 60000;
 
+        // only if user updated the input then
+        // 2. Set these minutes in circle text view.
+        if (timerMilliseconds > 0) {
+            setMinutesInCircle(input);
+
+            startTimer(timerMilliseconds);
+        } else {
+            String remainingMinute = formatTime(aTimeLeftInMillis);
+            setMinutesInCircle(remainingMinute);
+            startTimer(aTimeLeftInMillis);
+        }
+
+
         // 4. Start timer with user input
-        startTimer(timerMilliseconds);
+
     }
 
     private void startTimer(long millisecond) {
@@ -99,14 +110,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.d("TIMER", "Timer Remaining millisecond: " + millisUntilFinished);
+                aTimeLeftInMillis = millisUntilFinished;
 
-                // Convert milliseconds in minutes to display on UI. 1 min = 1/ 60 sec, 1 sec = 1/1000 millisecond.
-                int minutes = (int) (millisUntilFinished / 1000 % 3600) / 60;
-                int seconds = (int) (millisUntilFinished / 1000) % 60;
-                // Format minutes to display on UI example: 15:00
-                String formattedMinutes = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
                 // Update remaining minutes in countdown timer
-                aTextViewCountdown.setText(formattedMinutes);
+                aEditTextMinInput.setVisibility(View.INVISIBLE);
+              //TODO
+                //  aEditTextMinInput.setText("");
+
+                String formattedminute = formatTime(aTimeLeftInMillis);
+                aTextViewCountdown.setText(formattedminute);
             }
 
             @Override
@@ -122,18 +134,25 @@ public class MainActivity extends AppCompatActivity {
         aButtonStartPause.setText("Pause");
 
         // start function  return object of countdowntimer type , constructor does the same thing
-        updateWatchInterface();
-//        aTimerRunning = true;
-//        aButtonStartPause.setText("pause");
-//        aButtonReset.setVisibility(View.INVISIBLE);
     }
+
+    private String formatTime(long millisecond) {
+        // Convert milliseconds in minutes to display on UI. 1 min = 1/ 60 sec, 1 sec = 1/1000 millisecond.
+
+        int minutes = (int) (millisecond / 1000 % 3600) / 60;
+        int seconds = (int) (millisecond / 1000) % 60;
+        // Format minutes to display on UI example: 15:00
+        String formattedMinutes = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        return formattedMinutes;
+    }
+
 
     private void setMinutesInCircle(String minutes) {
         Log.d("TIMER", "min string: " + minutes);
         int min = Integer.parseInt(minutes);
         Log.d("TIMER", "int min: " + min);
         // 1. Check if input is a valid minute or not.
-        if (min <=0 || min > 60) {
+        if (min <= 0 || min > 60) {
             Toast.makeText(MainActivity.this, "Enter time between 0 to 60", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -166,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setTime(long milliseconds) {
         aStartTimeInMillis = milliseconds;
         resetTimer();
@@ -173,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playBomb() {
-        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.bomb);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bomb);
         Log.d("BOMB", String.valueOf(uri));
         bombView.setVideoURI(uri);
         bombView.setVisibility(View.VISIBLE);
@@ -187,9 +207,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pauseTimer() {
+        // 1.
+        aEditTextMinInput.setVisibility(View.VISIBLE);
         mCountDownTimer.cancel();
         aTimerRunning = false;
-        updateWatchInterface();
+        aButtonStartPause.setText("Start");
     }
 
     private void resetTimer() {
@@ -198,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         updateWatchInterface();
         //    aTextViewCountdown.setText(00:00:00);
     }
+
     private void updateCountDownText() {
         int hours = (int) (aTimeLeftInMillis / 1000) / 3660;
         int minutes = (int) (aTimeLeftInMillis / 1000 % 3600) / 60;
