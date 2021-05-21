@@ -20,7 +20,7 @@
             android:layout_marginStart="1dp"
             android:layout_marginLeft="3dp"
             android:inputType="number"
-            android:layout_marginTop="340dp"
+            android:layout_marginTop="320dp"
             android:maxLines="1"
             android:hint="Minute" />
 
@@ -48,11 +48,13 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:fontFamily="sans-serif-thin"
                 android:gravity="center"
-                android:text="0:00:00"
+                android:text="00:00"
+                android:inputType="number"
                 android:textAlignment="center"
                 android:textColor="#FFFF"
-                android:textSize="20dp"/>
+                android:textSize="80dp" />
 
 
         </androidx.cardview.widget.CardView>
