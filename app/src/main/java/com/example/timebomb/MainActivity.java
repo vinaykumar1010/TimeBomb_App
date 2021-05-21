@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer mCountDownTimer;
     private long aTimeLeftInMillis = START_TIME_IN_MILLIS;
     private long aStartTimeInMillis;
-    private long millisInput = 0 ;
+    private long millisInput = 1500000;
     private long aEndTime;
     private VideoView bombView;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // means we call on create function of (super ) parent class   so that
         // only after all parent class functions execution then our written funactionality start excuting
         setContentView(R.layout.activity_main);
+
        // setTime( long  milliseconds = 0 );
 
         aTextViewCountdown = findViewById(R.id.tv_Countdown);
@@ -66,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 // convert diretly to milisecond
                 if (millisInput == 0) {
                     Toast.makeText(MainActivity.this, "Please enter a positive number", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
                 setTime(millisInput);
+
                 aEditTextMinInput.setText("");
             }
         });
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetTimer();
+                setTime(0);
 
             }
         });
@@ -111,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 aButtonStartPause.setText("Pause");
                 aTimeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
+                bombView.stopPlayback();
             }
 
             @Override
@@ -137,7 +142,12 @@ public class MainActivity extends AppCompatActivity {
         bombView.setVideoURI(uri);
         bombView.setVisibility(View.VISIBLE);
         bombView.start();
-
+        bombView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                bombView.setVisibility(bombView.INVISIBLE);
+            }
+        });
     }
 
     private void pauseTimer() {

@@ -9,7 +9,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8f4f8 "
+        android:background="@drawable/gradient_color"
         tools:context=".MainActivity">
 
         <EditText
@@ -26,6 +26,7 @@
             android:hint="Hour"
             android:inputType="number"
             android:maxLength="4"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -37,9 +38,10 @@
             android:id="@+id/et_input_min"
             android:layout_width="86dp"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="3dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="340dp"
             android:layout_toEndOf="@+id/et_input_hour"
             android:layout_toRightOf="@+id/et_input_hour"
             android:hint="Minute" />
@@ -49,9 +51,9 @@
             android:id="@+id/bt_set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginLeft="11dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="340dp"
             android:layout_marginRight="63dp"
             android:layout_toEndOf="@+id/et_input_min"
             android:layout_toRightOf="@+id/et_input_min"
@@ -60,19 +62,23 @@
             android:text="Set"
             android:textColor="@color/white"
             android:translationZ="10dp"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Widget.MaterialComponents.ExtendedFloatingActionButton" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:layout_centerHorizontal="true"
+            android:layout_marginStart="80dp"
             android:layout_marginLeft="2dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="45dp"
             android:elevation="40dp"
+            android:layout_weight="1"
+            android:fitsSystemWindows="true"
             android:translationX="1dp"
-            android:translationY="1dp"
-            android:translationZ="1dp"
+            android:translationY="20dp"
+            android:translationZ="20dp"
+            app:cardBackgroundColor="#02307E"
             app:cardCornerRadius="180dp"
             app:cardElevation="40dp">
 
@@ -87,8 +93,8 @@
                 android:gravity="center"
                 android:text="0:00:00"
                 android:textAlignment="center"
-                android:textColor="#1589FF"
-                android:textSize="56sp" />
+                android:textColor="#FFFF"
+                android:textSize="20dp"/>
 
 
         </androidx.cardview.widget.CardView>
@@ -105,6 +111,7 @@
             android:text="Start"
             android:textColor="@color/white"
             android:translationZ="10dp"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -125,14 +132,15 @@
             android:text="Reset"
             android:textColor="@color/white"
             android:translationZ="10dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <VideoView
             android:id="@+id/virtual_view"
             android:layout_width="283dp"
             android:layout_height="246dp"
-            android:layout_marginTop="360dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="450dp"
             android:visibility="gone" />
 
     </RelativeLayout>
