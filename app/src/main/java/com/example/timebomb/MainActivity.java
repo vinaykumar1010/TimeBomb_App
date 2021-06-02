@@ -2,27 +2,22 @@ package com.example.timebomb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
-import android.media.Image;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import java.io.File;
 import java.util.Locale;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,13 +37,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      *
      * 8. fix orientation</>
+     * 9. If app is in background, timer should keep running untill coundown stopped. and call onstop
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // means we call on create function of (super ) parent class   so that
-        // only after all parent class functions execution then our written funactionality start excuting
+        // only after all parent class functions execution then our written funactionality start excutin
+
+        //SetSplashScreen();
         setContentView(R.layout.activity_main);
+
 
         aTextViewCountdown = findViewById(R.id.tv_Countdown);
         aButtonStartPause = findViewById(R.id.bt_start);
@@ -62,6 +61,33 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnStartButtonAndHandleAction();
         addListenerOnResetButtonAndHandleAction();
     }
+
+//private  void SetSplashScreen(){
+//
+//    Thread background = new Thread() {
+//        public void run() {
+//            try {
+//                setContentView(R.layout.splash_screen);
+//              //  setContentView(R.drawable.splash_image);
+//                // Thread will sleep for 5 seconds
+//                sleep(5*1000);
+//
+//                // After 5 seconds redirect to another intent
+//                Intent i=new Intent(getBaseContext(),MainActivity.class);
+//                startActivity(i);
+//
+//                //Remove activity
+//                finish();
+//            } catch (Exception e) {
+//            }
+//        }
+//    };
+//    // start thread
+//    background.start();}
+
+
+
+
 
     private void addListenerOnStartButtonAndHandleAction() {
         // One button is being used to handle start and pause action.

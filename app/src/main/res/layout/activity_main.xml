@@ -36,7 +36,7 @@
             android:translationX="1dp"
             android:translationY="20dp"
             android:translationZ="20dp"
-            app:cardBackgroundColor="#02307E"
+            app:cardBackgroundColor="#4ca1af "
             app:cardCornerRadius="180dp"
             app:cardElevation="40dp">
 
