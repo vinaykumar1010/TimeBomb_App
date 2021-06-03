@@ -9,7 +9,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_color"
+        android:background="#F5F5F5"
         tools:context=".MainActivity">
 
         <EditText
@@ -19,10 +19,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="3dp"
-            android:inputType="number"
             android:layout_marginTop="320dp"
+            android:hint="Minute"
+            android:inputType="number"
             android:maxLines="1"
-            android:hint="Minute" />
+            android:textColor="#1589FF" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="240dp"
@@ -30,13 +31,13 @@
             android:layout_marginStart="80dp"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="45dp"
-            android:elevation="40dp"
             android:layout_weight="1"
+            android:elevation="8dp"
             android:fitsSystemWindows="true"
             android:translationX="1dp"
             android:translationY="20dp"
             android:translationZ="20dp"
-            app:cardBackgroundColor="#4ca1af "
+            app:cardBackgroundColor="#FFFFFF "
             app:cardCornerRadius="180dp"
             app:cardElevation="40dp">
 
@@ -50,10 +51,10 @@
                 android:layout_marginRight="8dp"
                 android:fontFamily="sans-serif-thin"
                 android:gravity="center"
-                android:text="00:00"
                 android:inputType="number"
+                android:text="00:00"
                 android:textAlignment="center"
-                android:textColor="#FFFF"
+                android:textColor="#1589FF"
                 android:textSize="80dp" />
 
 
@@ -66,15 +67,15 @@
             android:layout_marginStart="108dp"
             android:layout_marginLeft="108dp"
             android:layout_marginTop="380dp"
-            android:background="@drawable/button_layout"
+          android:backgroundTint="#1589FF"
             android:elevation="10dp"
             android:text="Start"
             android:textColor="@color/white"
             android:translationZ="10dp"
-
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
 
         <Button
             android:id="@+id/bt_reset"
@@ -87,12 +88,13 @@
             android:layout_marginRight="219dp"
             android:layout_toEndOf="@+id/bt_start"
             android:layout_toRightOf="@+id/bt_start"
-            android:background="@drawable/button_layout"
+            android:backgroundTint="#1589FF"
             android:elevation="10dp"
             android:text="Reset"
             android:textColor="@color/white"
             android:translationZ="10dp"
             app:layout_constraintEnd_toEndOf="parent" />
+
 
         <VideoView
             android:id="@+id/virtual_view"
