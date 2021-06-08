@@ -1,6 +1,10 @@
 package com.example.timebomb;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -11,14 +15,17 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final long START_TIME_IN_MILLIS = 1500000; // 25min
+    private static final long BREAK_TIME_IN_MILLIS = 300000;
     private TextView aTextViewCountdown;
     private TextView aEditTextMinInput;
     private Button aButtonStartPause;
@@ -30,21 +37,25 @@ public class MainActivity extends AppCompatActivity {
     private long millisInput = 1500000;
     private long aEndTime;
     private VideoView bombView;
+    private boolean isFocusTimer = true;
     Window window;
 
+    private String TAG = "timebb";
+    private Button aButtonFocus;
+    private Button aButtonBreak;
+    private RelativeLayout color;
+
     /**
-     *
      * 8. fix orientation</>
      * 9. If app is in background, timer should keep running untill coundown stopped. and call onstop
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         // means we call on create function of (super ) parent class   so that
         // only after all parent class functions execution then our written funactionality start excutin
 
-        //SetSplashScreen();
-        setContentView(R.layout.activity_main);
         // change status bar color
         if (Build.VERSION.SDK_INT >= 21) {
             window = this.getWindow();
@@ -61,8 +72,61 @@ public class MainActivity extends AppCompatActivity {
         aTextViewCountdown.setText("25:00");
         aButtonReset.setVisibility(View.INVISIBLE);
 
+        aButtonFocus = findViewById(R.id.focus_btn);
+        aButtonBreak = findViewById(R.id.break_btn);
+        color = findViewById(R.id.main_layout);
+
         addListenerOnStartButtonAndHandleAction();
         addListenerOnResetButtonAndHandleAction();
+        clickFocus();
+        clickBreak();
+    }
+
+    private void clickFocus() {
+        Log.d(TAG, "clickFocus called aButtonFocus: " + aButtonFocus);
+
+        if (aButtonFocus != null) {
+            aButtonFocus.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    isFocusTimer = true;
+                    Log.d(TAG, "clickFocus inside onclick");
+                    color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.focus_color));
+                    aTextViewCountdown.setText("25:00");
+
+                    startTimer(START_TIME_IN_MILLIS, true);
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        window.setStatusBarColor(MainActivity.this.getColor(R.color.focus_color));
+                    }
+                }
+
+
+            });
+        }
+    }
+
+    private void clickBreak() {
+        Log.d(TAG, "clickBreak called");
+
+        if (aButtonBreak != null) {
+            aButtonBreak.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    isFocusTimer = false;
+                    color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.break_color));
+                    aTextViewCountdown.setText("5:00");
+//                    aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
+                    startTimer(BREAK_TIME_IN_MILLIS, false);
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        window.setStatusBarColor(MainActivity.this.getColor(R.color.break_color));
+                    }
+                }
+
+
+            });
+        }
     }
 
 
@@ -87,21 +151,20 @@ public class MainActivity extends AppCompatActivity {
         if (input.isEmpty()) {
             String remainingMinute = formatTime(aTimeLeftInMillis);
             aTextViewCountdown.setText(remainingMinute);
-            startTimer(aTimeLeftInMillis);
-        }
-        else if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= 60){
+            startTimer(aTimeLeftInMillis, true);
+        } else if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= 60) {
             // 2. Convert user input minutes in millisecond. 1 min = 1 * 60 * 1000 milliseconds = 60000 milliseconds
             long timerMilliseconds = Long.parseLong(String.valueOf(input)) * 60000;
             setMinutesInCircle(input);
-            startTimer(timerMilliseconds);
-        }
-        else {
+            startTimer(timerMilliseconds, true);
+        } else {
             Toast.makeText(MainActivity.this, "Enter time between 1 to 60", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
-    private void startTimer(long millisecond) {
+    private void startTimer(long millisecond, boolean focusTimer) {
+        cancelTimer();
         // constructor obj dega ,  2 fun ki defination b batao
         mCountDownTimer = new CountDownTimer(millisecond, 1000) {
             @Override
@@ -109,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
                 aTimeLeftInMillis = millisUntilFinished;
                 // Update remaining minutes in countdown timer
                 aEditTextMinInput.setVisibility(View.INVISIBLE);
-               //TODO
-                  aEditTextMinInput.setText("");
+                //TODO
+                aEditTextMinInput.setText("");
 
                 String formattedminute = formatTime(aTimeLeftInMillis);
                 aTextViewCountdown.setText(formattedminute);
@@ -147,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     private void setMinutesInCircle(String minutes) {
         int min = Integer.parseInt(minutes);
         // 2. Format minutes so that it looks like 15:00 instead of just 15
-        String formattedTime = String.format(Locale.getDefault(),  "%02d:%02d", min, 0);
+        String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", min, 0);
         // 3. Set this value in timer circle
         aTextViewCountdown.setText(formattedTime);
     }
@@ -156,14 +219,19 @@ public class MainActivity extends AppCompatActivity {
         aButtonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               aTimeLeftInMillis = START_TIME_IN_MILLIS;
-               aTextViewCountdown.setText("25:00");
-               aEditTextMinInput.setVisibility(View.VISIBLE);
-               aEditTextMinInput.setText("");
-               aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
+                if (isFocusTimer == true) {
+                    aTimeLeftInMillis = START_TIME_IN_MILLIS;
+                    aTextViewCountdown.setText("25:00");
+                } else {
+                    aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
+                    aTextViewCountdown.setText("5:00");
+                }
 
+                aEditTextMinInput.setVisibility(View.VISIBLE);
+                aEditTextMinInput.setText("");
+                aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
                 mCountDownTimer.cancel();
-               aTimerRunning = false;
+                aTimerRunning = false;
             }
         });
     }
@@ -239,11 +307,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    private void cancelTimer() {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        cancelTimer();
     }
 }

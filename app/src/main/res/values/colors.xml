@@ -10,5 +10,7 @@
     <color name="gradient_start_color">#4c84ff</color>
     <color name="gradient_end_color">#18a3fe</color>
     <color name="off_white">#d0e1e1</color>
+    <color name="focus_color">#85B2FF</color>
+    <color name="break_color">#FD8282</color>
 
 </resources>
