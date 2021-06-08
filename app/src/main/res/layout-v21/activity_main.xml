@@ -21,7 +21,6 @@
             android:layout_marginLeft="3dp"
             android:layout_marginTop="320dp"
             android:hint="Minute"
-            android:textColorHint="@color/off_white"
             android:inputType="number"
             android:maxLines="1"
             android:textColor="#1589FF" />
@@ -73,23 +72,25 @@
 
         <Button
             android:id="@+id/bt_start"
-            android:layout_width="111dp"
-            android:layout_height="111dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_below="@+id/et_input_min"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="11dp"
             android:background="@drawable/ic_play_circle_outline"
-            android:clickable="true"
             android:elevation="10dp"
             android:padding="10dp"
+            android:clickable="true"
+            android:textColor="@color/white"
             android:translationZ="10dp"
             app:backgroundTint="#1589FF"
-            android:focusable="true" />
+            tools:ignore="VectorDrawableCompat" />
 
         <Button
+
             android:id="@+id/bt_reset"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
             android:layout_marginStart="14dp"
             android:layout_marginLeft="14dp"
             android:layout_marginTop="380dp"
@@ -100,11 +101,10 @@
             android:elevation="10dp"
             android:padding="10dp"
             android:text="Reset"
-            android:textSize="13dp"
             android:clickable="true"
+            android:background="@drawable/background_button"
             android:textColor="@color/white"
             android:translationZ="10dp"
-            android:background="@drawable/background_button"
             app:backgroundTint="#1589FF"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="DuplicateIds" />

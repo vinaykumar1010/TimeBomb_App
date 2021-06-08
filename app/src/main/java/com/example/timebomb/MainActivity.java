@@ -1,23 +1,20 @@
 package com.example.timebomb;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
 import java.util.Locale;
-
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private long millisInput = 1500000;
     private long aEndTime;
     private VideoView bombView;
+    Window window;
 
     /**
      *
@@ -47,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         //SetSplashScreen();
         setContentView(R.layout.activity_main);
+        // change status bar color
+        if (Build.VERSION.SDK_INT >= 21) {
+            window = this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.design_default_color_surface));
+        }
 
 
         aTextViewCountdown = findViewById(R.id.tv_Countdown);
@@ -61,32 +64,6 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnStartButtonAndHandleAction();
         addListenerOnResetButtonAndHandleAction();
     }
-
-//private  void SetSplashScreen(){
-//
-//    Thread background = new Thread() {
-//        public void run() {
-//            try {
-//                setContentView(R.layout.splash_screen);
-//              //  setContentView(R.drawable.splash_image);
-//                // Thread will sleep for 5 seconds
-//                sleep(5*1000);
-//
-//                // After 5 seconds redirect to another intent
-//                Intent i=new Intent(getBaseContext(),MainActivity.class);
-//                startActivity(i);
-//
-//                //Remove activity
-//                finish();
-//            } catch (Exception e) {
-//            }
-//        }
-//    };
-//    // start thread
-//    background.start();}
-
-
-
 
 
     private void addListenerOnStartButtonAndHandleAction() {
@@ -142,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 aTimerRunning = false;
-                aButtonStartPause.setText("Start");
+                aButtonStartPause.setBackgroundResource(R.drawable.ic_pause_circle_outline);
                 aTimeLeftInMillis = START_TIME_IN_MILLIS;
                 aButtonReset.setVisibility(View.INVISIBLE);
                 playBomb();
@@ -152,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
         closeKeyboard();
         aTimerRunning = true;
         bombView.stopPlayback();
-        aButtonStartPause.setText("Pause");
+        aButtonStartPause.setBackgroundResource(R.drawable.ic_pause_circle_outline);
+
         aButtonReset.setVisibility(View.VISIBLE);
         // start function  return object of countdowntimer type , constructor does the same thing
     }
@@ -182,8 +160,9 @@ public class MainActivity extends AppCompatActivity {
                aTextViewCountdown.setText("25:00");
                aEditTextMinInput.setVisibility(View.VISIBLE);
                aEditTextMinInput.setText("");
-               aButtonStartPause.setText("Start");
-               mCountDownTimer.cancel();
+               aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
+
+                mCountDownTimer.cancel();
                aTimerRunning = false;
             }
         });
@@ -208,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
         aEditTextMinInput.setVisibility(View.VISIBLE);
         mCountDownTimer.cancel();
         aTimerRunning = false;
-        aButtonStartPause.setText("Start");
+        aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
+
     }
 
     private void resetTimer() {
@@ -231,11 +211,13 @@ public class MainActivity extends AppCompatActivity {
         if (aTimerRunning) {
             aEditTextMinInput.setVisibility(View.INVISIBLE);
             aButtonReset.setVisibility(View.INVISIBLE);
-            aButtonStartPause.setText("Pause");
+            aButtonStartPause.setBackgroundResource(R.drawable.ic_pause_circle_outline);
+
             aEditTextMinInput.setText(0);
         } else {
             aEditTextMinInput.setVisibility(View.VISIBLE);
-            aButtonStartPause.setText("Start");
+            aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
+
             if (aTimeLeftInMillis < 1000) {
                 aButtonStartPause.setVisibility(View.INVISIBLE);
             } else {
