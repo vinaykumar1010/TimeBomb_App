@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private Button aButtonFocus;
     private Button aButtonBreak;
     private RelativeLayout color;
+    private int FocusCounter = 0;
+    private int BreakCounter = 0;
 
     /**
      * 8. fix orientation</>
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // change status bar color
         if (Build.VERSION.SDK_INT >= 21) {
             window = this.getWindow();
-            window.setStatusBarColor(this.getResources().getColor(R.color.design_default_color_surface));
+            window.setStatusBarColor(this.getResources().getColor(R.color.focus_color));
         }
 
 
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 aTimerRunning = false;
+
                 aButtonStartPause.setBackgroundResource(R.drawable.ic_pause_circle_outline);
                 aTimeLeftInMillis = START_TIME_IN_MILLIS;
                 aButtonReset.setVisibility(View.INVISIBLE);

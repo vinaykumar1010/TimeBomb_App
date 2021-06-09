@@ -12,7 +12,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/minh_unsplash"
+        android:src="@drawable/mark_unsplash"
+        android:alpha="0.6"
         android:adjustViewBounds="true"
         android:scaleType = "centerCrop"
         tools:ignore="MissingConstraints"
@@ -25,10 +26,12 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="120dp"
         android:text="TIME BOMB"
-        android:textSize="30dp"
-        android:layout_marginLeft="30dp" />
+        android:textColor="@color/black"
+        android:textSize="30dp" />
 
 </RelativeLayout>
