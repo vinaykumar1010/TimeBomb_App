@@ -22,10 +22,11 @@ import android.widget.VideoView;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+enum TimerType {FOCUS, SHORTBREAK, LONGBREAK};
 
-    private static final long START_TIME_IN_MILLIS = 1500000; // 25min
-    private static final long BREAK_TIME_IN_MILLIS = 300000;
+public class MainActivity extends AppCompatActivity {
+    private static final long START_TIME_IN_MILLIS = 1501000;
+    private static final long BREAK_TIME_IN_MILLIS = 301000;
     private TextView aTextViewCountdown;
     private TextView aEditTextMinInput;
     private Button aButtonStartPause;
@@ -37,15 +38,23 @@ public class MainActivity extends AppCompatActivity {
     private long millisInput = 1500000;
     private long aEndTime;
     private VideoView bombView;
-    private boolean isFocusTimer = true;
+    private TimerType runningTimerType = TimerType.FOCUS;
     Window window;
-
+    private final String focusTimerText = "25:00";
+    private final String breakTimerText =  "5:00";
     private String TAG = "timebb";
     private Button aButtonFocus;
     private Button aButtonBreak;
     private RelativeLayout color;
-    private int FocusCounter = 0;
-    private int BreakCounter = 0;
+    private int focusCounter = 0;
+    private int breakCounter = 0;
+    private TextView aFocusCycle;
+    private TextView aBreakCycle;
+    private TextView aFocusCycleFixed;
+    private TextView aBreakCycleFixed;
+    private TextView aFocusCycleTV;
+    private TextView aBreakCycleTV;
+
 
     /**
      * 8. fix orientation</>
@@ -71,12 +80,19 @@ public class MainActivity extends AppCompatActivity {
         aEditTextMinInput = findViewById(R.id.et_input_min);
         bombView = findViewById(R.id.virtual_view);
 
-        aTextViewCountdown.setText("25:00");
+        aTextViewCountdown.setText(focusTimerText);
         aButtonReset.setVisibility(View.INVISIBLE);
 
         aButtonFocus = findViewById(R.id.focus_btn);
         aButtonBreak = findViewById(R.id.break_btn);
         color = findViewById(R.id.main_layout);
+
+        aFocusCycle = findViewById(R.id.focus_cycle_tv);
+        aBreakCycle = findViewById(R.id.break_cycle_tv);
+        aFocusCycleFixed = findViewById(R.id.focus_cycle_fixed);
+        aBreakCycleFixed = findViewById(R.id.break_cycle_fixed);
+        aFocusCycleTV=findViewById(R.id.focus_cycle_tv);
+        aBreakCycleTV = findViewById(R.id.break_cycle_tv);
 
         addListenerOnStartButtonAndHandleAction();
         addListenerOnResetButtonAndHandleAction();
@@ -92,19 +108,22 @@ public class MainActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    isFocusTimer = true;
-                    Log.d(TAG, "clickFocus inside onclick");
-                    color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.focus_color));
-                    aTextViewCountdown.setText("25:00");
-
-                    startTimer(START_TIME_IN_MILLIS, true);
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        window.setStatusBarColor(MainActivity.this.getColor(R.color.focus_color));
-                    }
+                    handleStartTimer();
                 }
-
-
             });
+        }
+    }
+
+    private void handleStartTimer() {
+        runningTimerType = TimerType.FOCUS;
+        Log.d(TAG, "clickFocus inside onclick");
+        color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.focus_color));
+        aTextViewCountdown.setText(focusTimerText);
+
+        startTimer(START_TIME_IN_MILLIS);
+        if (Build.VERSION.SDK_INT >= 21) {
+            window = this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.focus_color));
         }
     }
 
@@ -116,21 +135,24 @@ public class MainActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    isFocusTimer = false;
-                    color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.break_color));
-                    aTextViewCountdown.setText("5:00");
-//                    aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
-                    startTimer(BREAK_TIME_IN_MILLIS, false);
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        window.setStatusBarColor(MainActivity.this.getColor(R.color.break_color));
-                    }
+                    handleBreakClick();
                 }
-
-
             });
         }
     }
 
+    private void handleBreakClick() {
+        runningTimerType = TimerType.SHORTBREAK;
+        color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.break_color));
+        aTextViewCountdown.setText(breakTimerText);
+//                    aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
+        startTimer(BREAK_TIME_IN_MILLIS);
+        // status color
+        if (Build.VERSION.SDK_INT >= 21) {
+            window = this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.break_color));
+        }
+    }
 
     private void addListenerOnStartButtonAndHandleAction() {
         // One button is being used to handle start and pause action.
@@ -153,19 +175,19 @@ public class MainActivity extends AppCompatActivity {
         if (input.isEmpty()) {
             String remainingMinute = formatTime(aTimeLeftInMillis);
             aTextViewCountdown.setText(remainingMinute);
-            startTimer(aTimeLeftInMillis, true);
+            startTimer(aTimeLeftInMillis);
         } else if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= 60) {
             // 2. Convert user input minutes in millisecond. 1 min = 1 * 60 * 1000 milliseconds = 60000 milliseconds
             long timerMilliseconds = Long.parseLong(String.valueOf(input)) * 60000;
             setMinutesInCircle(input);
-            startTimer(timerMilliseconds, true);
+            startTimer(timerMilliseconds);
         } else {
             Toast.makeText(MainActivity.this, "Enter time between 1 to 60", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
-    private void startTimer(long millisecond, boolean focusTimer) {
+    private void startTimer(long millisecond) {
         cancelTimer();
         // constructor obj dega ,  2 fun ki defination b batao
         mCountDownTimer = new CountDownTimer(millisecond, 1000) {
@@ -184,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 aTimerRunning = false;
-
                 aButtonStartPause.setBackgroundResource(R.drawable.ic_pause_circle_outline);
                 aTimeLeftInMillis = START_TIME_IN_MILLIS;
                 aButtonReset.setVisibility(View.INVISIBLE);
@@ -222,12 +243,12 @@ public class MainActivity extends AppCompatActivity {
         aButtonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFocusTimer == true) {
+                if (runningTimerType == TimerType.FOCUS) {
                     aTimeLeftInMillis = START_TIME_IN_MILLIS;
-                    aTextViewCountdown.setText("25:00");
+                    aTextViewCountdown.setText(focusTimerText);
                 } else {
                     aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
-                    aTextViewCountdown.setText("5:00");
+                    aTextViewCountdown.setText(breakTimerText);
                 }
 
                 aEditTextMinInput.setVisibility(View.VISIBLE);
@@ -242,6 +263,15 @@ public class MainActivity extends AppCompatActivity {
     public void playBomb() {
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bomb);
         Log.d("BOMB", String.valueOf(uri));
+
+        aButtonFocus.setVisibility(View.INVISIBLE);
+        aButtonBreak.setVisibility(View.INVISIBLE);
+        aFocusCycleFixed.setVisibility(View.INVISIBLE);
+        aBreakCycleFixed.setVisibility(View.INVISIBLE);
+        aFocusCycleTV.setVisibility(View.INVISIBLE);
+        aBreakCycleTV.setVisibility(View.INVISIBLE);
+
+
         bombView.setVideoURI(uri);
         bombView.setVisibility(View.VISIBLE);
         bombView.start();
@@ -249,7 +279,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 bombView.setVisibility(bombView.INVISIBLE);
-                aTextViewCountdown.setText("25:00");
+                aButtonFocus.setVisibility(View.VISIBLE);
+                aButtonBreak.setVisibility(View.VISIBLE);
+                aFocusCycleFixed.setVisibility(View.VISIBLE);
+                aBreakCycleFixed.setVisibility(View.VISIBLE);
+                aFocusCycleTV.setVisibility(View.VISIBLE);
+                aBreakCycleTV.setVisibility(View.VISIBLE);
+
+                /**
+                 * Start break timer if current timer is focus
+                 * Start focus timer if current timer is break
+                 */
+                if (runningTimerType == TimerType.FOCUS) {
+                    // start break timer
+                    handleBreakClick();
+                    focusCounter++;
+                    Log.d(TAG, "focus cycle" + focusCounter);
+                    aFocusCycle.setText(Integer.toString(focusCounter));
+
+                } else {
+                    // start focus timer
+                    handleStartTimer();
+                    breakCounter++;
+                    Log.d(TAG, "break cycle" + breakCounter);
+                    aBreakCycle.setText(Integer.toString(breakCounter));
+                }
+//                aTextViewCountdown.setText(focusTimerText);
             }
         });
     }

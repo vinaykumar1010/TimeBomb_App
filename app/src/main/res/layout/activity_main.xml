@@ -20,7 +20,7 @@
         android:inputType="number"
         android:maxLines="1"
         android:textColor="@color/white"
-        android:textColorHint="@color/off_white" />
+        android:textColorHint="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="240dp"
@@ -34,7 +34,7 @@
         android:translationX="1dp"
         android:translationY="20dp"
         android:translationZ="20dp"
-        app:cardBackgroundColor="#FFFFFF "
+        app:cardBackgroundColor="#F5F5F5 "
         app:cardCornerRadius="180dp"
         app:cardElevation="40dp">
 
@@ -51,7 +51,7 @@
             android:inputType="number"
             android:text="00:00"
             android:textAlignment="center"
-            android:textColor="#1589FF"
+            android:textColor="@color/dodger_blue"
             android:textSize="80dp" />
 
 
@@ -80,29 +80,28 @@
         android:focusable="true"
         android:padding="10dp"
         android:translationZ="10dp"
-        app:backgroundTint="#1589FF" />
+        app:backgroundTint="@color/dodger_blue" />
 
     <Button
         android:id="@+id/bt_reset"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/bt_start"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="-61dp"
         android:layout_marginEnd="219dp"
         android:layout_marginRight="219dp"
         android:layout_toEndOf="@+id/bt_start"
         android:layout_toRightOf="@+id/bt_start"
-        android:background="@drawable/background_button"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
-        android:text="Reset"
+        android:text="STOP"
         android:textColor="@color/white"
         android:textSize="13dp"
         android:translationZ="10dp"
-        app:backgroundTint="#1589FF"
+        app:backgroundTint="@color/dodger_blue"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="DuplicateIds" />
 
@@ -110,9 +109,11 @@
         android:id="@+id/focus_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="76dp"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
@@ -120,7 +121,7 @@
         android:textColor="@color/white"
         android:textSize="13dp"
         android:translationZ="10dp"
-        app:backgroundTint="#1589FF" />
+        app:backgroundTint="@color/dodger_blue" />
 
     <Button
         android:id="@+id/break_btn"
@@ -128,9 +129,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginBottom="76dp"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
@@ -138,16 +141,72 @@
         android:textColor="@color/white"
         android:textSize="13dp"
         android:translationZ="10dp"
-        app:backgroundTint="#1589FF" />
+        app:backgroundTint="@color/dodger_blue" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textSize="20dp"
+        android:textSize="35dp"
+        android:textColor="#F5F5F5F5"
         android:layout_marginTop="10dp"
         android:text="Pomodoro Technique" />
+
+    <TextView
+        android:id="@+id/focus_cycle_fixed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="35dp"
+        android:textSize="20dp"
+        android:text="Focus Cycle :"
+        android:inputType="number"
+        android:maxLines="1"
+        android:clickable="false"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/focus_cycle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="35dp"
+        android:maxLines="1"
+        android:focusable="true"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:clickable="false"
+        android:layout_toRightOf="@id/focus_cycle_fixed" />
+    <TextView
+        android:id="@+id/break_cycle_fixed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="65dp"
+        android:textSize="20dp"
+        android:text="Break Cycle :"
+        android:clickable="false"
+        android:inputType="number"
+        android:maxLines="1"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/break_cycle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="65dp"
+        android:maxLines="1"
+        android:clickable="false"
+        android:focusable="true"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_toRightOf="@id/break_cycle_fixed" />
 
 </RelativeLayout>
 
