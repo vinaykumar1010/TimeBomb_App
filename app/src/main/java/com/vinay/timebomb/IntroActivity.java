@@ -23,7 +23,7 @@ public class IntroActivity extends AppCompatActivity {
     private ViewPager screenPager;
     IntroViewPagerAdapter introViewPagerAdapter ;
     TabLayout tabIndicator;
-    Button btnNext;
+    TextView btnNext;
     int position = 0 ;
     Button btnGetStarted;
     Animation btnAnim ;
@@ -64,7 +64,7 @@ public class IntroActivity extends AppCompatActivity {
         final List<ScreenItem> mList = new ArrayList<>();
         mList.add(new ScreenItem("Time Bomb", "Bomb Plays After Every time CountDown Finises. ", R.drawable.time_bomb_onboarding));
         mList.add(new ScreenItem("Increase Productivity", "Focus and Break Implementation Effectively Enhance the Productivity", R.drawable.productivity_png));
-        mList.add(new ScreenItem("", "", R.drawable.pomodoro));
+        mList.add(new ScreenItem("What Pomodoro is  ?", "Follow the Above Steps to get the Best Effective Result", R.drawable.pomodoro));
         mList.add(new ScreenItem("Track Your Progress", " Here You Know the Time Spent for work and Time Wasted", R.drawable.track_progress_onboarding));
 
         // setup viewpager
