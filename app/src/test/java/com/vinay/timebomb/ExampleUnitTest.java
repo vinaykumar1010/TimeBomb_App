@@ -1,4 +1,4 @@
-package com.example.timebomb;
+package com.vinay.timebomb;
 
 import org.junit.Test;
 

@@ -119,9 +119,9 @@
         android:padding="10dp"
         android:text="Focus"
         android:textColor="@color/white"
+        app:backgroundTint="@color/dodger_blue"
         android:textSize="13dp"
-        android:translationZ="10dp"
-        app:backgroundTint="@color/dodger_blue" />
+        android:translationZ="10dp" />
 
     <Button
         android:id="@+id/break_btn"

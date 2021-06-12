@@ -1,4 +1,4 @@
-package com.example.timebomb;
+package com.vinay.timebomb;
 
 import androidx.appcompat.app.AppCompatActivity;
 

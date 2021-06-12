@@ -1,10 +1,9 @@
-package com.example.timebomb;
+package com.vinay.timebomb;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TimerType runningTimerType = TimerType.FOCUS;
     Window window;
     private final String focusTimerText = "25:00";
-    private final String breakTimerText =  "5:00";
+    private final String breakTimerText = "5:00";
     private String TAG = "timebb";
     private Button aButtonFocus;
     private Button aButtonBreak;
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         aBreakCycle = findViewById(R.id.break_cycle_tv);
         aFocusCycleFixed = findViewById(R.id.focus_cycle_fixed);
         aBreakCycleFixed = findViewById(R.id.break_cycle_fixed);
-        aFocusCycleTV=findViewById(R.id.focus_cycle_tv);
+        aFocusCycleTV = findViewById(R.id.focus_cycle_tv);
         aBreakCycleTV = findViewById(R.id.break_cycle_tv);
 
         addListenerOnStartButtonAndHandleAction();

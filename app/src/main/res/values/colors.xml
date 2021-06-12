@@ -13,5 +13,14 @@
     <color name="focus_color">#85B2FF</color>
     <color name="break_color">#FD8282</color>1e90ff
     <color name="dodger_blue">#1e90ff</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#ffffff</color>
+
+    <!-- colors for tab and screent text -->
+
+    <color name="tab_indicator_gray">#c0c0c0</color>
+    <color name="intro_title_color">#000000</color>
+    <color name="intro_description_color">#656565</color>
 
 </resources>

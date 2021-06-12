@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.timebomb">
+    package="com.vinay.timebomb">
 
     <application
         android:allowBackup="true"
@@ -9,26 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TimeBomb">
-        <activity android:name=".SplashActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
+
+            <activity android:name="com.vinay.timebomb.IntroActivity"
+                android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name="com.vinay.timebomb.SplashActivity"
             android:theme="@style/Theme.Design.Light.NoActionBar"/>
-<!--        <activity android:name=".SplashActivity"></activity>-->
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity android:name="com.vinay.timebomb.MainActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar"/>
     </application>
 
 </manifest>
