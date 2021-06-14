@@ -4,6 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -53,8 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView aBreakCycleFixed;
     private TextView aFocusCycleTV;
     private TextView aBreakCycleTV;
-
-
+// @Override
+//protected void onCreate(Bundle savedInstanceState) {
+//    super.onCreate(savedInstanceState);
+//    setContentView(R.layout.main);
+//
+//    startService(new Intent(this, BroadcastService.class));
+//    Log.i(TAG, "Started service");
+//}
     /**
      * 8. fix orientation</>
      * 9. If app is in background, timer should keep running untill coundown stopped. and call onstop
@@ -65,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // means we call on create function of (super ) parent class   so that
         // only after all parent class functions execution then our written funactionality start excutin
+        startService(new Intent(this, BroadcastService.class));
+        Log.i(TAG, "Started service");
 
         // change status bar color
         if (Build.VERSION.SDK_INT >= 21) {
@@ -92,11 +105,46 @@ public class MainActivity extends AppCompatActivity {
         aBreakCycleFixed = findViewById(R.id.break_cycle_fixed);
         aFocusCycleTV = findViewById(R.id.focus_cycle_tv);
         aBreakCycleTV = findViewById(R.id.break_cycle_tv);
+//
+//        addListenerOnStartButtonAndHandleAction();
+//        addListenerOnResetButtonAndHandleAction();
+//        clickFocus();
+//        clickBreak();
+    }
 
-        addListenerOnStartButtonAndHandleAction();
-        addListenerOnResetButtonAndHandleAction();
-        clickFocus();
-        clickBreak();
+    private BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateGUI(intent); // or whatever method used to update your GUI fields
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(br, new IntentFilter(BroadcastService.COUNTDOWN_BR));
+        Log.i(TAG, "Registered broadcast receiver");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(br);
+        Log.i(TAG, "Unregistered broacast receiver");
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, BroadcastService.class));
+        Log.i(TAG, "Stopped service");
+        super.onDestroy();
+    }
+
+    private void updateGUI(Intent intent) {
+        if (intent.getExtras() != null) {
+            long millisUntilFinished = intent.getLongExtra("countdown", 0);
+            Log.i(TAG, "Countdown seconds remaining: " +  millisUntilFinished / 1000);
+        }
     }
 
     private void clickFocus() {
@@ -372,7 +420,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
         cancelTimer();
+
+        try {
+            unregisterReceiver(br);
+        } catch (Exception e) {
+            // Receiver was probably already stopped in onPause()
+        }
+        super.onStop();
     }
 }
