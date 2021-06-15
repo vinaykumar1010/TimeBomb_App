@@ -103,7 +103,7 @@
         android:translationZ="10dp"
         app:backgroundTint="@color/dodger_blue"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="DuplicateIds" />
+         />
 
     <Button
         android:id="@+id/focus_btn"
