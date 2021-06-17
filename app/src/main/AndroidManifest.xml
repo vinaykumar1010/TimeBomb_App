@@ -9,20 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TimeBomb">
+
         <service android:name=".BroadcastService" />
 
-            <activity android:name="com.vinay.timebomb.IntroActivity"
-                android:theme="@style/Theme.Design.Light.NoActionBar">
+        <activity
+            android:name=".IntroActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.vinay.timebomb.SplashActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
-        <activity android:name="com.vinay.timebomb.MainActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
     </application>
 
 </manifest>

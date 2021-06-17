@@ -29,13 +29,13 @@ import java.util.Locale;
 enum TimerType {FOCUS, SHORTBREAK, LONGBREAK};
 
 public class MainActivity extends AppCompatActivity {
-    private static final long START_TIME_IN_MILLIS = 3000;     //1501000;
-    private static final long BREAK_TIME_IN_MILLIS = 2000;    //301000;
+    private static final long START_TIME_IN_MILLIS = 6000;     //1501000;
+    private static final long BREAK_TIME_IN_MILLIS = 4000;    //301000;
     private TextView aTextViewCountdown;
     private TextView aEditTextMinInput;
     private Button aButtonStartPause;
     private Button aButtonReset;
-    private boolean aTimerRunning;
+    private boolean aTimerRunning = false;
     private CountDownTimer mCountDownTimer;
     private long aTimeLeftInMillis = START_TIME_IN_MILLIS;
     private long aStartTimeInMillis;
@@ -56,19 +56,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView aBreakCycle;
     private TextView aFocusCycleFixed;
     private TextView aBreakCycleFixed;
-    private TextView aFocusCycleTV;
-    private TextView aBreakCycleTV;
+
+
+
     private static final String ACTIVITY_BR = "com.vinay.timebomb.mainactivity_br";
     private Intent timerIntent;
 
-// @Override
-//protected void onCreate(Bundle savedInstanceState) {
-//    super.onCreate(savedInstanceState);
-//    setContentView(R.layout.main);
-//
-//    startService(new Intent(this, BroadcastService.class));
-//    Log.i(TAG, "Started service");
-//}
 
     /**
      * 8. fix orientation</>
@@ -85,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // change status bar color
         if (Build.VERSION.SDK_INT >= 21) {
             window = this.getWindow();
-            window.setStatusBarColor(this.getResources().getColor(R.color.focus_color));
+            window.setStatusBarColor(this.getResources().getColor(R.color.very_light_blue));
         }
 
         aTextViewCountdown = findViewById(R.id.tv_Countdown);
@@ -99,16 +92,16 @@ public class MainActivity extends AppCompatActivity {
         aButtonFocus = findViewById(R.id.focus_btn);
         aButtonBreak = findViewById(R.id.break_btn);
         color = findViewById(R.id.main_layout);
+        aFocusCycleFixed = findViewById(R.id.focus_cycle_fixed);
+        aBreakCycleFixed = findViewById(R.id.break_cycle_fixed);
+
 
         aFocusCycle = findViewById(R.id.focus_cycle_tv);
         aBreakCycle = findViewById(R.id.break_cycle_tv);
-        aFocusCycleFixed = findViewById(R.id.focus_cycle_fixed);
-        aBreakCycleFixed = findViewById(R.id.break_cycle_fixed);
-        aFocusCycleTV = findViewById(R.id.focus_cycle_tv);
-        aBreakCycleTV = findViewById(R.id.break_cycle_tv);
 
         addListenerOnStartButtonAndHandleAction();
         addListenerOnResetButtonAndHandleAction();
+
         clickFocus();
         clickBreak();
     }
@@ -156,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
             aTimeLeftInMillis = intent.getLongExtra("countdown", 0);
             String formattedminute = formatTime(aTimeLeftInMillis);
             aTextViewCountdown.setText(formattedminute);
-            Log.i(Constants.TAG, LogPrefix + "updateGUI remaining time: " + aTimeLeftInMillis/1000);
-            if (aTimeLeftInMillis/1000 == 0) {
+            Log.i(Constants.TAG, LogPrefix + "updateGUI remaining time: " + aTimeLeftInMillis / 1000);
+            if (aTimeLeftInMillis / 1000 == 0) {
                 playBomb();
             }
         }
@@ -168,10 +161,15 @@ public class MainActivity extends AppCompatActivity {
         aButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopService(timerIntent);
+//                stopService(timerIntent);
                 if (aTimerRunning) {
+                    aTimerRunning =false;
                     stopService(timerIntent);
+
+                    aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+
                 } else {
+
                     takeInputWhileStart();
                 }
             }
@@ -199,12 +197,13 @@ public class MainActivity extends AppCompatActivity {
 
                 aEditTextMinInput.setVisibility(View.VISIBLE);
                 aEditTextMinInput.setText("");
-                aButtonStartPause.setBackgroundResource(R.drawable.ic_play_circle_outline);
+                aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
                 // mCountDownTimer.cancel();
                 aTimerRunning = false;
             }
         });
     }
+
 
     private void clickFocus() {
         Log.d(Constants.TAG, LogPrefix + "clickFocus called aButtonFocus: " + aButtonFocus);
@@ -213,11 +212,30 @@ public class MainActivity extends AppCompatActivity {
             aButtonFocus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    stopService(timerIntent);
+                    aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
                     handleFocusClick();
                 }
             });
         }
     }
+
+    private void handleFocusClick() {
+        //stopService(timerIntent);
+        runningTimerType = TimerType.FOCUS;
+        Log.d(Constants.TAG, LogPrefix + "handleFocusClick");
+        color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.focus_color));
+        aTextViewCountdown.setText(focusTimerText);
+
+        timerIntent.putExtra("timerDuration", START_TIME_IN_MILLIS);
+        startService(timerIntent);
+        aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_pause_circle_filled_24);
+        if (Build.VERSION.SDK_INT >= 21) {
+            window = this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.very_light_blue));
+        }
+    }
+
 
     private void clickBreak() {
         Log.d(Constants.TAG, LogPrefix + "clickBreak called");
@@ -226,35 +244,24 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     stopService(timerIntent);
+                    aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+
                     handleBreakClick();
                 }
             });
         }
     }
 
-    private void handleFocusClick() {
-        stopService(timerIntent);
-        runningTimerType = TimerType.FOCUS;
-        Log.d(Constants.TAG, LogPrefix + "handleFocusClick");
-        color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.focus_color));
-        aTextViewCountdown.setText(focusTimerText);
-
-        timerIntent.putExtra("timerDuration", START_TIME_IN_MILLIS);
-        startService(timerIntent);
-        if (Build.VERSION.SDK_INT >= 21) {
-            window = this.getWindow();
-            window.setStatusBarColor(this.getResources().getColor(R.color.focus_color));
-        }
-    }
-
     private void handleBreakClick() {
-        stopService(timerIntent);
+        // stopService(timerIntent);
         runningTimerType = TimerType.SHORTBREAK;
         color.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.break_color));
         aTextViewCountdown.setText(breakTimerText);
         aTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
         timerIntent.putExtra("timerDuration", aTimeLeftInMillis);
         startService(timerIntent);
+        aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_pause_circle_filled_24);
+
         // status color
         if (Build.VERSION.SDK_INT >= 21) {
             window = this.getWindow();
@@ -265,22 +272,31 @@ public class MainActivity extends AppCompatActivity {
     private void takeInputWhileStart() {
         // 1. Get user input minutes from minutes edit text
         String input = aEditTextMinInput.getText().toString();
-        Log.d(Constants.TAG, LogPrefix +"input: " + input);
+        Log.d(Constants.TAG, LogPrefix + "input: " + input);
         if (input.isEmpty()) {
             String remainingMinute = formatTime(aTimeLeftInMillis);
             aTextViewCountdown.setText(remainingMinute);
             //  startTimer(aTimeLeftInMillis);
             timerIntent.putExtra("timerDuration", aTimeLeftInMillis);
+            aTimerRunning = true;
             startService(timerIntent);
+            aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_pause_circle_filled_24);
+
         } else if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= 60) {
             // 2. Convert user input minutes in millisecond. 1 min = 1 * 60 * 1000 milliseconds = 60000 milliseconds
             long timerMilliseconds = Long.parseLong(String.valueOf(input)) * 60000;
             setMinutesInCircle(input);
             timerIntent.putExtra("timerDuration", timerMilliseconds);
+            aTimerRunning = true;
             startService(timerIntent);
+            aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_pause_circle_filled_24);
+
+
             //  startTimer(timerMilliseconds);
         } else {
             Toast.makeText(MainActivity.this, "Enter time between 1 to 60", Toast.LENGTH_SHORT).show();
+            // aButtonStartPause.setBackgroundResource(R.drawable.ic_baseline_play_circle_filled_24);
+
             return;
         }
     }
@@ -346,8 +362,9 @@ public class MainActivity extends AppCompatActivity {
         aButtonBreak.setVisibility(View.INVISIBLE);
         aFocusCycleFixed.setVisibility(View.INVISIBLE);
         aBreakCycleFixed.setVisibility(View.INVISIBLE);
-        aFocusCycleTV.setVisibility(View.INVISIBLE);
-        aBreakCycleTV.setVisibility(View.INVISIBLE);
+        aFocusCycle.setVisibility(View.INVISIBLE);
+        aBreakCycle.setVisibility(View.INVISIBLE);
+
 
         bombView.setVideoURI(uri);
         bombView.setVisibility(View.VISIBLE);
@@ -356,12 +373,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 bombView.setVisibility(bombView.INVISIBLE);
+
                 aButtonFocus.setVisibility(View.VISIBLE);
                 aButtonBreak.setVisibility(View.VISIBLE);
                 aFocusCycleFixed.setVisibility(View.VISIBLE);
                 aBreakCycleFixed.setVisibility(View.VISIBLE);
-                aFocusCycleTV.setVisibility(View.VISIBLE);
-                aBreakCycleTV.setVisibility(View.VISIBLE);
+                aFocusCycle.setVisibility(View.VISIBLE);
+                aBreakCycle.setVisibility(View.VISIBLE);
 
                 /**
                  * Start break timer if current timer is focus
@@ -370,21 +388,27 @@ public class MainActivity extends AppCompatActivity {
                 if (runningTimerType == TimerType.FOCUS) {
                     // start break timer
                     handleBreakClick();
-                    focusCounter++;
-                    Log.d(Constants.TAG, LogPrefix +"focus cycle" + focusCounter);
-                    aFocusCycle.setText(Integer.toString(focusCounter));
+                     focusCounter+=1 ;
+                    aFocusCycle.setText(String.valueOf(focusCounter));
+                    Log.d("ssss",  "focus cycle" + focusCounter);
 
                 } else {
                     // start focus timer
                     handleFocusClick();
-                    breakCounter++;
-                    Log.d(Constants.TAG, LogPrefix+ "break cycle" + breakCounter);
-                    aBreakCycle.setText(Integer.toString(breakCounter));
+                    breakCounter +=1;
+                    //aBreakCycle.setText(breakCounter);
+                    aFocusCycle.setText(String.valueOf(breakCounter));
+
+                    Log.d("ssss",  "break cycle" + breakCounter);
+
                 }
 //                aTextViewCountdown.setText(focusTimerText);
             }
         });
     }
+
+
+
 
 //    private void pauseTimer() {
 //        aEditTextMinInput.setVisibility(View.VISIBLE);
@@ -459,4 +483,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onStop();
     }
+
+
 }

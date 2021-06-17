@@ -5,22 +5,25 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/focus_color"
+    android:background="@color/very_light_blue"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/et_input_min"
         android:layout_width="86dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="320dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toStartOf="@+id/bt_reset"
+        android:layout_toLeftOf="@+id/bt_reset"
         android:hint="Minute"
         android:inputType="number"
         android:maxLines="1"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/dodger_blue"
+        android:textColorHint="@color/focus_color" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="240dp"
@@ -30,6 +33,7 @@
         android:layout_marginTop="45dp"
         android:layout_weight="1"
         android:elevation="8dp"
+        android:layout_centerHorizontal="true"
         android:fitsSystemWindows="true"
         android:translationX="1dp"
         android:translationY="20dp"
@@ -69,71 +73,154 @@
 
     <Button
         android:id="@+id/bt_start"
-        android:layout_width="111dp"
-        android:layout_height="111dp"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
         android:layout_below="@+id/et_input_min"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
-        android:background="@drawable/ic_play_circle_outline"
+        android:background="@drawable/ic_baseline_play_circle_filled_24"
         android:clickable="true"
         android:elevation="10dp"
         android:focusable="true"
         android:padding="10dp"
         android:translationZ="10dp"
-        app:backgroundTint="@color/dodger_blue" />
+        android:backgroundTint="@color/dodger_blue" />
+
 
     <Button
         android:id="@+id/bt_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/bt_start"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="-61dp"
-        android:layout_marginEnd="219dp"
-        android:layout_marginRight="219dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginRight="59dp"
         android:layout_toEndOf="@+id/bt_start"
         android:layout_toRightOf="@+id/bt_start"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
-        android:text="STOP"
+        android:text="RESET"
         android:textColor="@color/white"
         android:textSize="13dp"
         android:translationZ="10dp"
         app:backgroundTint="@color/dodger_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-         />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/total_minutes_focused_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/total_minutes_focused_fixed"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/total_minutes_focused_fixed"
+        android:layout_toRightOf="@+id/total_minutes_focused_fixed"
+        android:clickable="false"
+        android:focusable="true"
+        android:maxLines="1"
+        android:textColor="@color/dodger_blue"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/focus_cycle_fixed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="23dp"
+        android:clickable="false"
+        android:inputType="number"
+        android:maxLines="1"
+        android:text="Today Focus Cycle :"
+        android:textColor="@color/dodger_blue"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/focus_cycle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_start"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="23dp"
+        android:layout_toRightOf="@id/focus_cycle_fixed"
+        android:clickable="false"
+        android:focusable="true"
+        android:maxLines="1"
+        android:textColor="@color/dodger_blue"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/break_cycle_fixed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/focus_cycle_fixed"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="14dp"
+        android:clickable="false"
+        android:inputType="number"
+        android:maxLines="1"
+        android:text="Today Break Cycle :"
+        android:textColor="@color/dodger_blue"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/break_cycle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/focus_cycle_fixed"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/break_cycle_fixed"
+        android:layout_toRightOf="@+id/break_cycle_fixed"
+        android:clickable="false"
+        android:focusable="true"
+        android:maxLines="1"
+        android:textColor="@color/dodger_blue"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/focus_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="76dp"
+        android:layout_below="@+id/break_cycle_fixed"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="42dp"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
         android:text="Focus"
         android:textColor="@color/white"
-        app:backgroundTint="@color/dodger_blue"
         android:textSize="13dp"
-        android:translationZ="10dp" />
+        android:translationZ="10dp"
+        app:backgroundTint="@color/dodger_blue" />
 
     <Button
         android:id="@+id/break_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/break_cycle_fixed"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:clickable="true"
         android:elevation="10dp"
         android:padding="10dp"
@@ -143,70 +230,6 @@
         android:translationZ="10dp"
         app:backgroundTint="@color/dodger_blue" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textSize="35dp"
-        android:textColor="#F5F5F5F5"
-        android:layout_marginTop="10dp"
-        android:text="Pomodoro Technique" />
-
-    <TextView
-        android:id="@+id/focus_cycle_fixed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_start"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="35dp"
-        android:textSize="20dp"
-        android:text="Focus Cycle :"
-        android:inputType="number"
-        android:maxLines="1"
-        android:clickable="false"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:id="@+id/focus_cycle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_start"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="35dp"
-        android:maxLines="1"
-        android:focusable="true"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:clickable="false"
-        android:layout_toRightOf="@id/focus_cycle_fixed" />
-    <TextView
-        android:id="@+id/break_cycle_fixed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_start"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="65dp"
-        android:textSize="20dp"
-        android:text="Break Cycle :"
-        android:clickable="false"
-        android:inputType="number"
-        android:maxLines="1"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:id="@+id/break_cycle_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_start"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="65dp"
-        android:maxLines="1"
-        android:clickable="false"
-        android:focusable="true"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_toRightOf="@id/break_cycle_fixed" />
 
 </RelativeLayout>
 

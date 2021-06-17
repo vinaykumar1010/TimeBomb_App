@@ -21,4 +21,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="ClickableView">
+        <item name="colorControlHighlight">@color/focus_color</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
 </resources>
